@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\AdresseController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -16,3 +17,5 @@ Route::get('/test',function(){
     return response()->json($tableau,200);
 });
 
+Route::get('/adresses',[AdresseController::class,"index"]);
+Route::post('/adresses/create',[AdresseController::class,"create"]);
