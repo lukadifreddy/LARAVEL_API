@@ -61,5 +61,5 @@ class AdresseCreateRequest extends FormRequest
              "numero.max"=>"Les textes saisit depasse la limitation recommandée",
         ];
     }
-    
+     
 }

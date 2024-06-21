@@ -11,7 +11,7 @@ use Exception;
 class AdresseController extends Controller
 {
     public function index(){
-        return "ici sera erigé la liste des adresses";
+        return "Ici sera Dressé la liste des adresses";
     }
     public function create(AdresseCreateRequest $req){
         
@@ -35,7 +35,7 @@ class AdresseController extends Controller
                 "Error"=>true,
                 "Message"=>"ça n'as pas aboutis",
                 "Erros list"=>$error
-            ],500);
+        ],500);
         }
     }
     
