@@ -19,3 +19,4 @@ Route::get('/test',function(){
 
 Route::get('/adresses',[AdresseController::class,"index"]);
 Route::post('/adresses/create',[AdresseController::class,"create"]);
+Route::put('/adresse/editor/{id}',[AdresseController::class,"editor"]);

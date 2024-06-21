@@ -38,5 +38,18 @@ class AdresseController extends Controller
         ],500);
         }
     }
+    public function editor(){
+            try 
+            {
+
+            }catch(Exception $error){
+                return response()->json([
+                    "Success"=>false,
+                    "Error"=>true,
+                    "Message"=>"ça n'as pas aboutis",
+                    "Erros list"=>$error
+            ],500);
+            }
+    }
     
 };
