@@ -52,12 +52,21 @@ class AgenceController extends Controller
     public function editor(AgenceEditorRequest $req, Agence $Agence){
                
         try {
+            $agence_adresse=Adresse::find($req->id_adresse);
+            if(!$agence_adresse){
+                return response()->json([
+                    "Success"=>false,
+                    "Error"=>true,
+                    "Message"=>"ça n'as pas aboutis",
+                    "Erros list"=>"L'agence n'as pas été changé"
+            ],500);
+            }
             $Agence->nom_agence=$req->nom_agence;
             $Agence->code_agence=$req->code_agence;
             $Agence->phone_agence=$req->phone_agence;
             $Agence->usd=$req->usd;
             $Agence->cdf=$req->cdf;
-            $Agence->numero=$req->numero;
+            $nouvelle_agence->id_adresse=$agence_adresse->id;
             $Agence->save();
 
             }catch(Exception $error){
