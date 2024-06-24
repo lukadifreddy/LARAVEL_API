@@ -54,8 +54,7 @@ class AgenceController extends Controller
         try {
             $agence_adresse=Adresse::find($req->id_adresse);            
             if(!$agence_adresse){
-                
-                return response()->json([
+                 return response()->json([
                     "Success"=>false,
                     "Error"=>true,
                     "Message"=>"ça n'as pas aboutis",

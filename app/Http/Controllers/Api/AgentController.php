@@ -28,10 +28,12 @@ class AgentController extends Controller
         $nouvelle_agent->phone_agent=$req->phone_agent;
         $nouvelle_agent->date_de_naissance=$req->date_de_naissance;
         $nouvelle_agent->fonction=$req->fonction;
+        $nouvelle_agent->id_adresse=$agent_adresse->id;
+        $nouvelle_agent->id_adresse=$agent_adresse->id;
         $nouvelle_agent->save();
         return response()->json([
             "Status_code"=>201,
-            "Status_message"=>"L'agent a été ajouté",
+            "Status_message"=>"L'agent a étais ajouté",
             "Data"=>$nouvelle_agent
         ],201);
         }catch(Exception $error){
@@ -46,6 +48,16 @@ class AgentController extends Controller
     public function editor(AgentEditorRequest $req, Agent $Agent){
                
         try {
+            $agent_adresse=Adresse::find($req->id_adresse);            
+            if(!$agent_adresse){
+                return response()->json([
+                    "Success"=>false,
+                    "Error"=>true,
+                    "Message"=>"L'agent n'as pas pu etre modifier",
+                    "Erros list"=>"L'agent n'a pas étais changé"
+            ],500);
+            }
+
             $Agent->name_agent=$req->name_agent;
             $Agent->prenom_agent=$req->prenom_agent;
             $Agent->e_mail_agent=$req->e_mail_agent;
@@ -62,6 +74,7 @@ class AgentController extends Controller
                     "Erros list"=>$error
             ],500);
             }
+            
      
         }
         public function delete(Agent $Agent){
