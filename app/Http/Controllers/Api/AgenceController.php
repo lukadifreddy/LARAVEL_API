@@ -52,8 +52,9 @@ class AgenceController extends Controller
     public function editor(AgenceEditorRequest $req, Agence $Agence){
                
         try {
-            $agence_adresse=Adresse::find($req->id_adresse);
+            $agence_adresse=Adresse::find($req->id_adresse);            
             if(!$agence_adresse){
+                
                 return response()->json([
                     "Success"=>false,
                     "Error"=>true,
@@ -66,7 +67,7 @@ class AgenceController extends Controller
             $Agence->phone_agence=$req->phone_agence;
             $Agence->usd=$req->usd;
             $Agence->cdf=$req->cdf;
-            $nouvelle_agence->id_adresse=$agence_adresse->id;
+            $Agence->id_adresse=$agence_adresse->id;
             $Agence->save();
 
             }catch(Exception $error){
