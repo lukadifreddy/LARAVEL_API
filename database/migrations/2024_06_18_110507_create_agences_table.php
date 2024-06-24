@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string("nom_agence",45)->unique();
             $table->string("code_agence",2)->unique();
-            $table->string("code_agence")->unique();
+            $table->string("phone_agence")->unique();
             $table->decimal("usd");
             $table->decimal("cdf");
             $table->unsignedBigInteger("id_adresse");

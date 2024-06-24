@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Adresse;
 use App\Http\Requests\Api\AdresseCreateRequest;
 use Exception;
+use App\Http\Requests\Api\AdresseEditorRequest;
 
 class AdresseController extends Controller
 {
@@ -38,9 +39,16 @@ class AdresseController extends Controller
         ],500);
         }
     }
-    public function editor(){
-            try 
-            {
+    public function editor(AdresseEditorRequest $req, Adresse $Adresse){
+               
+        try {
+            $Adresse->avenue=$req->avenue;
+            $Adresse->quartier=$req->quartier;
+            $Adresse->commune=$req->commune;
+            $Adresse->ville=$req->ville;
+            $Adresse->province=$req->province;
+            $Adresse->numero=$req->numero;
+            $Adresse->save();
 
             }catch(Exception $error){
                 return response()->json([
@@ -50,6 +58,26 @@ class AdresseController extends Controller
                     "Erros list"=>$error
             ],500);
             }
-    }
+     
+        }
+        public function delete(Adresse $Adresse){
+            
+            try{
+                $Adresse->delete();
+                return response()->json([
+                    "Status_code"=>200,
+                    "Status_message"=>"La suppremion à été effectué",
+                    "Data"=>$Adresse
+                ],200);
+
+            }catch(Exception $error){
+                return response()->json([
+                    "Success"=>false,
+                    "Error"=>true,
+                    "Message"=>"la suppression n'as pas aboutis",
+                    "Erros list"=>$error
+            ],500);
+            }
+        }
     
 };
