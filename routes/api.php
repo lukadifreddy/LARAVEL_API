@@ -36,7 +36,7 @@ Route::put('/agences/editor/{Agence}',[agenceController::class,"editor"]);
 Route::delete('/agences/delete/{Agence}',[AgenceController::class,"delete"]);
 
 // les routes vers les differents elements agent
-Route::get('/agent',[agenceController::class,"index"]);
+Route::get('/agents',[agenceController::class,"index"]);
 Route::post('/agents/create',[agentController::class,"create"]);
 Route::put('/agents/editor/{Adresse}',[agentController::class,"editor"]);
 Route::delete('/agents/delete/{Adresse}',[AgentController::class,"delete"]);
