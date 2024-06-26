@@ -20,12 +20,14 @@ class AdresseController extends Controller
             $query->whereRaw("avenue LIKE '%"
             .$search."%' OR quartier LIKE '%"
             .$search."%' OR commune LIKE '%"
-            .$search."%'OR ville LIKE '%"
-            .$search." OR avenue LIKE '%"
-            .$search."%'OR province LIKE '%"
-            .$search."%'OR numero LIKE '%"
-            .$search. "%'")->get();
+            .$search."%' OR ville LIKE '%"
+            .$search."%' OR avenue LIKE '%"
+            .$search."%' OR province LIKE '%"
+            .$search."%' OR numero LIKE '%"
+            .$search. "%'");
         }
+        $total=$query->count();
+        $result=$query->offset(($page-1)*$persopage)->limit($persopage)->get();
         try {
             return response()->json([
                 "Status_code"=>200,
