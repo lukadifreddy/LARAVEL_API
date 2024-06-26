@@ -11,8 +11,35 @@ use App\Http\Requests\Api\AdresseEditorRequest;
 
 class AdresseController extends Controller
 {
-    public function index(){
-        return "Ici sera Dressé la liste des adresses";
+    public function index(Request $req){
+        $query=Adresse::query();
+        $persopage=1;
+        $page=$req->input("page",1);
+        $search=$req->input("search");
+        if ($search){
+            $query->whereRaw("avenue LIKE '%"
+            .$search."%' OR quartier LIKE '%"
+            .$search."%' OR commune LIKE '%"
+            .$search."%'OR ville LIKE '%"
+            .$search." OR avenue LIKE '%"
+            .$search."%'OR province LIKE '%"
+            .$search."%'OR numero LIKE '%"
+            .$search. "%'")->get();
+        }
+        try {
+            return response()->json([
+                "Status_code"=>200,
+                "Status_message"=>"Recuperation d'adresse reussi",
+                "Data"=>Adresse::all()
+            ],200);
+        } catch (Exception $error) {
+            return response()->json([
+                "Success"=>false,
+                "Error"=>true,
+                "Message"=>"ça n'as pas aboutis",
+                "Erros list"=>$error
+        ],500);
+        }
     }
     public function create(AdresseCreateRequest $req){
         

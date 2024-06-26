@@ -19,6 +19,7 @@ class AgentController extends Controller
     public function create(AgentCreateRequest $req){
         
         try{
+        $agent_agence=Agence::find($req->id_agence);
         $agent_adresse=Adresse::find($req->id_adresse);
         if(!$agent_adresse){
             return response()->json([
@@ -28,7 +29,6 @@ class AgentController extends Controller
                 "Erros list"=>"L'adresse n'as pas été trouvé"
         ],500);
         }
-        $agent_agence=Agence::find($req->id_agence);
         if(!$agent_agence){
             return response()->json([
                 "Success"=>false,
@@ -64,6 +64,7 @@ class AgentController extends Controller
     public function editor(AgentEditorRequest $req, Agent $Agent){
                
         try {
+            $agent_agence=Agence::find($req->id_agence);
             $agent_adresse=Adresse::find($req->id_adresse);            
             if(!$agent_adresse){
                 return response()->json([
