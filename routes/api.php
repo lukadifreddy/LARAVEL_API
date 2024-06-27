@@ -9,6 +9,8 @@ use App\Http\Controllers\Api\ClientController;
 use App\Http\Controllers\Api\ExterneController;
 use App\Http\Controllers\Api\OperationController;
 use App\Http\Controllers\Api\UtilisateurController;
+use App\Http\Controllers\Api\UserController;
+
 use routes\api;
 
 Route::get('/user', function (Request $request) {
@@ -24,19 +26,19 @@ Route::get('/test',function(){
     return response()->json($tableau,200);
 });
 // les routes vers les differents elements adresse
-Route::get('/adresses',[AdresseController::class,"index"]);
+Route::get('/adresse',[AdresseController::class,"index"]);
 Route::post('/adresses/create',[AdresseController::class,"create"]);
 Route::put('/adresses/editor/{Adresse}',[AdresseController::class,"editor"]);
 Route::delete('/adresses/delete/{Adresse}',[AdresseController::class,"delete"]);
 
 // les routes vers les differents elements agence
-Route::get('/agence',[agenceController::class,"index"]);
-Route::post('/agences/create',[agenceController::class,"create"]);
-Route::put('/agences/editor/{Agence}',[agenceController::class,"editor"]);
+Route::get('/agence',[AgenceController::class,"index"]);
+Route::post('/agences/create',[AgenceController::class,"create"]);
+Route::put('/agences/editor/{Agence}',[AgenceController::class,"editor"]);
 Route::delete('/agences/delete/{Agence}',[AgenceController::class,"delete"]);
 
 // les routes vers les differents elements agent
-Route::get('/agents',[agenceController::class,"index"]);
+Route::get('/agent',[agenceController::class,"index"]);
 Route::post('/agents/create',[agentController::class,"create"]);
 Route::put('/agents/editor/{Adresse}',[agentController::class,"editor"]);
 Route::delete('/agents/delete/{Adresse}',[AgentController::class,"delete"]);
@@ -67,3 +69,6 @@ Route::delete('/utilisateur/delete/{Adresse}',[UtilisateurController::class,"del
 
 // la route vers la page d'Accueil
 Route::view('/', 'welcome');
+
+// la route pour user
+Route::post('/enregisteur',[UserController::class,"register"]);

@@ -12,8 +12,37 @@ use App\Models\Adresse;
 
 class AgenceController extends Controller
 {
-    public function index (){
-        return "Ici sera Dressé la liste des Agences";
+    public function index (Request $req){
+        $query=Agence::query();
+        $persopage=25;
+        $page=$req->input("page",1);
+        $search=$req->input("search");
+        if ($search){
+            $query->whereRaw("nom_agence LIKE '%"
+            .$search."%' OR code_agence LIKE '%"
+            .$search."%' OR phone_agence LIKE '%"
+            .$search."%' OR usd LIKE '%"
+            .$search."%' OR cdf LIKE '%"
+            .$search. "%'");
+        }
+        $total=$query->count();
+        $result=$query->offset(($page-1)*$persopage)->limit($persopage)->get();
+        try {
+            return response()->json([
+                "Status_code"=>200,
+                "Status_message"=>"Recuperation d'agence reussi",
+                "current_page"=>$page,
+                "last_page"=>ceil($total/$persopage),
+                "items"=>$result
+            ],200);
+        } catch (Exception $error) {
+            return response()->json([
+                "Success"=>false,
+                "Error"=>true,
+                "Message"=>"ça n'as pas aboutis",
+                "Erros list"=>$error
+        ],500);
+        }
     }
     public function create(AgenceCreateRequest $req){
         
@@ -52,13 +81,14 @@ class AgenceController extends Controller
     public function editor(AgenceEditorRequest $req, Agence $Agence){
                
         try {
+           
             $agence_adresse=Adresse::find($req->id_adresse);            
             if(!$agence_adresse){
                  return response()->json([
                     "Success"=>false,
                     "Error"=>true,
                     "Message"=>"ça n'as pas aboutis",
-                    "Erros list"=>"L'agence n'as pas été changé"
+                    "Erros list"=>"L'adresse de l'agence n'as pas été changé"
             ],500);
             }
             $Agence->nom_agence=$req->nom_agence;

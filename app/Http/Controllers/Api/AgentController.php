@@ -13,8 +13,38 @@ use App\Models\Agence;
 
 class AgentController extends Controller
 {
-    public function index (){
-        return "Ici sera Dressé la liste des Agents";
+    public function index (Request $req){
+        $query=Agence::query();
+        $persopage=25;
+        $page=$req->input("page",1);
+        $search=$req->input("search");
+        if ($search){
+            $query->whereRaw("name_agent LIKE '%"
+            .$search."%' OR prenom_agent LIKE '%"
+            .$search."%' OR phone_agence LIKE '%"
+            .$search."%' OR e_mail_agent LIKE '%"
+            .$search."%' OR date_de_naissance LIKE '%"
+            .$search."%' OR fonction LIKE '%"
+            .$search. "%'");
+        }
+        $total=$query->count();
+        $result=$query->offset(($page-1)*$persopage)->limit($persopage)->get();
+        try {
+            return response()->json([
+                "Status_code"=>200,
+                "Status_message"=>"Recuperation d'agent reussi",
+                "current_page"=>$page,
+                "last_page"=>ceil($total/$persopage),
+                "items"=>$result
+            ],200);
+        } catch (Exception $error) {
+            return response()->json([
+                "Success"=>false,
+                "Error"=>true,
+                "Message"=>"ça n'as pas aboutis",
+                "Erros list"=>$error
+        ],500);
+        }   
     }
     public function create(AgentCreateRequest $req){
         

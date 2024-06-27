@@ -13,7 +13,7 @@ class AdresseController extends Controller
 {
     public function index(Request $req){
         $query=Adresse::query();
-        $persopage=1;
+        $persopage=25;
         $page=$req->input("page",1);
         $search=$req->input("search");
         if ($search){
@@ -32,7 +32,9 @@ class AdresseController extends Controller
             return response()->json([
                 "Status_code"=>200,
                 "Status_message"=>"Recuperation d'adresse reussi",
-                "Data"=>Adresse::all()
+                "current_page"=>$page,
+                "last_page"=>ceil($total/$persopage),
+                "items"=>$result
             ],200);
         } catch (Exception $error) {
             return response()->json([
