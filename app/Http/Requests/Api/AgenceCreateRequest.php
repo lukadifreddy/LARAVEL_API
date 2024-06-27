@@ -25,18 +25,19 @@ class AgenceCreateRequest extends FormRequest
         return [
             "nom_agence"=>"required|string|max:45|unique:agences",
             "code_agence"=>"required|string|max:2|unique:agences",
-            "phone_agence"=>"required|string|max:15|unique:agences",
+            "phone_agence"=>"required|string|max:15|regex:/^[0-9]+$/|unique:agences",
             "usd"=>"required|integer",
             "cdf"=>"required|integer",
         ];
     } 
     public function failedValidation(Validator $validator){
         throw new HttpResponseException(response()->json([
+            "Statut_code"=>422,
             "Success"=>false,
             "Error"=>true,
             "Message"=>"Champs incorrects",
             "Erros list"=>$validator->errors()
-        ],400));
+        ],422));
 
     }
     public function messages(){
