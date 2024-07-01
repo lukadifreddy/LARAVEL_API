@@ -4,10 +4,10 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Agent;
-use App\Http\Requests\Api\AgentCreateRequest;
+use App\Models\Externe;
+use App\Http\Requests\Api\ExterneCreateRequest;
 use Exception;
-use App\Http\Requests\Api\AgentEditorRequest;
+use App\Http\Requests\Api\ExterneEditorRequest;
 use App\Models\Adresse;
 use App\Models\Agence;
 

@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('utilisateurs', function (Blueprint $table) {
             $table->id();
-            $table->string("nom_utilisateur",45);
-            $table->string("password",45);
-            $table->unsignedBigInteger("id_externe");
-            $table->unsignedBigInteger("id_agent");
+            $table->string("nom_utilisateur",45)->unique();
+            $table->string("password",256);
+            $table->unsignedBigInteger("id_externe")->nullable()->unique();
+            $table->unsignedBigInteger("id_agent")->nullable()->unique();
             $table->timestamps();
             $table->foreign("id_externe")->references("id")->on("externes")->onDelete("restrict");
             $table->foreign("id_agent")->references("id")->on("agents")->onDelete("restrict");

@@ -64,6 +64,7 @@ Route::delete('/operation/delete/{Adresse}',[OperationController::class,"delete"
 // les routes vers les differents elements utilisateur
 Route::get('/utilisateur',[utilisateurController::class,"index"]);
 Route::post('/utilisateur/create',[utilisateurController::class,"create"]);
+Route::post('/utilisateur/login',[utilisateurController::class,"login"]);
 Route::put('/utilisateur/editor/{Adresse}',[utilisateurController::class,"editor"]);
 Route::delete('/utilisateur/delete/{Adresse}',[UtilisateurController::class,"delete"]);
 
@@ -72,3 +73,4 @@ Route::view('/', 'welcome');
 
 // la route pour user
 Route::post('/enregisteur',[UserController::class,"register"]);
+Route::post('/login',[UserController::class,"login"]);

@@ -8,8 +8,11 @@ use App\Models\Utilisateur;
 use App\Http\Requests\Api\UtilisateurCreateRequest;
 use Exception;
 use App\Http\Requests\Api\UtilisateurEditorRequest;
+use App\Http\Requests\Api\UtilisateurLoginRequest;
 use App\Models\Agent;
 use App\Models\Externe;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 
 class UtilisateurController extends Controller
 {
@@ -26,7 +29,7 @@ class UtilisateurController extends Controller
                 "Success"=>false,
                 "Error"=>true,
                 "Message"=>"ça n'as pas aboutis",
-                "Erros list"=>"L'adresse n'as pas été trouvé"
+                "Erros list"=>"l'utilisateur n'a pas étais trouvé"
         ],422);
         }
         if($id_utilisateur_Agent && $id_utilisateur_Externe ){
@@ -45,12 +48,19 @@ class UtilisateurController extends Controller
                 "Erros list"=>"Agent et Externe n'ont pzs etait trouvé dans la base donnnée"
         ],500);
         }
-        $nouvelle_Utilisateur= new Utilisateur();
-        $nouvelle_Utilisateur->name_Utilisateur=$req->name_Utilisateur;
-        $nouvelle_Utilisateur->prenom_Utilisateur=$req->prenom_Utilisateur;
-        $nouvelle_Utilisateur->id_adresse=$agent_adresse->id;
-        $nouvelle_Utilisateur->id_agence=$agent_agence->id;
-        $nouvelle_Utilisateur->save();
+        $nouvelle_utilisateur= new Utilisateur();
+        if($id_utilisateur_Agent){
+          
+            $nouvelle_utilisateur->id_agent=$id_utilisateur_Agent->id;
+        }
+        if ($id_utilisateur_Externe){
+            
+           
+            $nouvelle_utilisateur->id_externe=$id_utilisateur_Externe->id;
+        }
+        $nouvelle_utilisateur->nom_utilisateur=$req->nom_utilisateur;
+        $nouvelle_utilisateur->password=Hash::make($req->password,['rounds'=>15]);
+        $nouvelle_utilisateur->save();
         return response()->json([
             "Status_code"=>201,
             "Status_message"=>"L'Utilisateur a étais ajouté",
@@ -65,6 +75,7 @@ class UtilisateurController extends Controller
         ],500);
         }
     }
+    
     public function editor(UtilisateurEditorRequest $req, Utilisateur $Utilisateur){
                
         try {
