@@ -23,7 +23,31 @@ class ExterneCreateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            "nom_externe"=>"required|string|max:45",
+            "fonction_externe"=>"required|string|max:45",
+            "motif"=>"required|string|max:500",
+        ];
+    }
+
+    public function failedValidation(Validator $validator){
+        throw new HttpResponseException(response()->json([
+            "Success"=>false,
+            "Error"=>true,
+            "Message"=>"Champs incorrects",
+            "Erros list"=>$validator->errors()
+        ],400));
+    }
+    public function messsages(){
+        return[
+            "nom_externe.required"=>"Le champs nom_externe est vide",
+            "nom_externe.string"=>"Les contenus saisit dans le nom_externe n'est pas une chaine de caractere",
+            "nom_externe.max"=>"Les textes saisit depasse la limitation recommandée",
+            "fonction_externe.required"=>"Le champs fonction_externe est vide",
+            "fonction_externe.string"=>"Les contenus saisit dans le fonction_externe n'est pas une chaine de caractere",
+            "fonction_externe.max"=>"Les textes saisit depasse la limitation recommandée",
+            "motif.required"=>"Les contenus saisit dans e_mail_client n'est pas un email",
+            "motif.string"=>"Les textes saisit depasse la limitation recommandée",
+            "motif.max"=>"Cet e_mail_client est déjà utilisé",
         ];
     }
 }

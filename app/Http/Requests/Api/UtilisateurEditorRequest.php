@@ -23,7 +23,24 @@ class UtilisateurEditorRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            
+        ];
+    }
+    public function failedValidation(Validator $validator){
+        throw new HttpResponseException(response()->json([
+            "Success"=>false,
+            "Error"=>true,
+            "Message"=>"La modificcation n'a pas aboutis",
+            "Erros list"=>$validator->errors()
+        ],400));
+    }
+    public function messages (){
+        return [
+            "nom_utilisateur.string"=>"Le contenus de ce champ n'est pas une chaine de caractere",
+            "nom_utilisateur.max"=>"Les contenus inserer depasse la limitation recommandée",
+            "nom_utilisateur.string"=>"Le contenus de ce champ n'est pas une chaine de caractere",
+            "nom_utilisateur.max"=>"Les contenus inserer depasse la limitation recommandée",
+            "nom_utilisateur.unique"=>"Le nom_uy=tilisqteur existe déjà",
         ];
     }
 }

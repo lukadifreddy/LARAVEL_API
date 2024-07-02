@@ -4,37 +4,55 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Agent;
-use App\Http\Requests\Api\AgentCreateRequest;
+use App\Models\Operation;
+use App\Http\Requests\Api\OperationCreateRequest;
 use Exception;
-use App\Http\Requests\Api\AgentEditorRequest;
+use App\Http\Requests\Api\OperationEditorRequest;
 use App\Models\Adresse;
 use App\Models\Agence;
+use App\Models\Agent;
+use App\Models\Client;
 
-class AgentController extends Controller
+class OperationController extends Controller
 {
     public function index (){
-        return "Ici sera Dressé la liste des Agents";
+        $page=$req->input("page",1);
+        $search=$req->input("search");
+        if ($search){
+            $query->whereRaw("montant LIKE '%"
+            .$search."%' OR devise LIKE '%"
+            .$search."%' OR commision LIKE '%"
+            .$search."%' OR code_operation LIKE '%"
+            .$search."%' OR etat LIKE '%"
+            .$search."%' OR date_livraison LIKE '%"
+              );
+        }
+        $total=$query->count();
+        $result=$query->offset(($page-1)*$persopage)->limit($persopage)->get();  
     }
-    public function create(AgentCreateRequest $req){
+    public function create(OperationCreateRequest $req){
         
         try{
-        $agent_adresse=Adresse::find($req->id_adresse);
-        $agent_agence=Agence::find($req->id_agence);
-        $nouvelle_agent= new Agent();
-        $nouvelle_agent->name_agent=$req->name_agent;
-        $nouvelle_agent->prenom_agent=$req->prenom_agent;
-        $nouvelle_agent->e_mail_agent=$req->e_mail_agent;
-        $nouvelle_agent->phone_agent=$req->phone_agent;
-        $nouvelle_agent->date_de_naissance=$req->date_de_naissance;
-        $nouvelle_agent->fonction=$req->fonction;
-        $nouvelle_agent->id_adresse=$agent_adresse->id;
-        $nouvelle_agent->id_agence=$agent_agence->id;
-        $nouvelle_agent->save();
+        $operation_adresse=Adresse::find($req->id_adresse);
+        $operation_agence=Agence::find($req->id_agence);
+        $operation_adresse=Agent::find($req->id_agent);
+        $operation_agence=Client::find($req->id_client);
+        $nouvelle_operation= new operation();
+        $nouvelle_operation->montant=$req->montant;
+        $nouvelle_operation->devise=$req->devise;
+        $nouvelle_operation->commission=$req->commision;
+        $nouvelle_operation->code_operation=$req->code_operation;
+        $nouvelle_operation->etat=$req->etat;
+        $nouvelle_operation->date_livraison=$req->date_livraison;
+        $nouvelle_operation->id_adresse=$operation_adresse->id;
+        $nouvelle_operation->id_agence=$operation_agence->id;
+        $nouvelle_operation->id_agent=$operation_agent->id;
+        $nouvelle_operation->id_client=$operation_client->id;
+        $nouvelle_operation->save();
         return response()->json([
             "Status_code"=>201,
-            "Status_message"=>"L'agent a étais ajouté",
-            "Data"=>$nouvelle_agent
+            "Status_message"=>"L'operation a étais ajouté",
+            "Data"=>$nouvelle_operation
         ],201);
         }catch(Exception $error){
             return response()->json([
@@ -45,26 +63,61 @@ class AgentController extends Controller
         ],500);
         }
     }
-    public function editor(AgentEditorRequest $req, Agent $Agent){
+    public function editor(OperationEditorRequest $req, Operation $Operation){
                
         try {
-            $agent_adresse=Adresse::find($req->id_adresse);            
-            if(!$agent_adresse){
+            $operation_adresse=Adresse::find($req->id_adresse); 
+            $operation_agence=Agence::find($req->id_agence);            
+            $operation_agent=Agent::find($req->id_agent);            
+            $operation_client=Client::find($req->id_client);            
+        
+            if(!$operation_adresse){
                 return response()->json([
                     "Success"=>false,
                     "Error"=>true,
-                    "Message"=>"L'agent n'as pas pu etre modifier",
-                    "Erros list"=>"L'agent n'a pas étais changé"
+                    "Message"=>"L'operation n'as pas pu etre modifier",
+                    "Erros list"=>"L'operation n'a pas étais changé"
+            ],500);
+            }
+            if(!$operation_agence){
+                return response()->json([
+                    "Success"=>false,
+                    "Error"=>true,
+                    "Message"=>"L'operation n'as pas pu etre modifier",
+                    "Erros list"=>"L'operation n'a pas étais changé"
+            ],500);
+            }
+            if(!$operation_agent){
+                return response()->json([
+                    "Success"=>false,
+                    "Error"=>true,
+                    "Message"=>"L'operation n'as pas pu etre modifier",
+                    "Erros list"=>"L'operation n'a pas étais changé"
+            ],500);
+            }
+            if(!$operation_client){
+                return response()->json([
+                    "Success"=>false,
+                    "Error"=>true,
+                    "Message"=>"L'operation n'as pas pu etre modifier",
+                    "Erros list"=>"L'operation n'a pas étais changé"
             ],500);
             }
 
-            $Agent->name_agent=$req->name_agent;
-            $Agent->prenom_agent=$req->prenom_agent;
-            $Agent->e_mail_agent=$req->e_mail_agent;
-            $Agent->phone_agent=$req->phone_agent;
-            $Agent->date_de_naissance=$req->date_de_naissance;
-            $Agent->fonction=$req->fonction;
-            $Agent->save();
+            $Operation->montant=$req->name_operation;
+            $Operation->devise=$req->prenom_operation;
+            $Operation->commission=$req->e_mail_operation;
+            $Operation->code_operation=$req->phone_operation;
+            $Operation->etat=$req->date_de_naissance;
+            $Operation->date_livraison=$req->date_de_naissance;
+            $Operation->date_livraison=$req->date_de_naissance;
+            $Operation->date_livraison=$req->date_de_naissance;
+            $Operation->id_adresse=$operation_adresse->id;
+            $Operation->id_agence=$operation_agence->id;
+            $Operation->id_agent=$operation_agent->id;
+            $Operation->id_client=$operation_client->id;
+            $Operation->fonction=$req->fonction;
+            $Operation->save();
 
             }catch(Exception $error){
                 return response()->json([
@@ -76,14 +129,14 @@ class AgentController extends Controller
             }
      
         }
-        public function delete(Agent $Agent){
+        public function delete(Operation $Operation){
             
             try{
-                $Agent->delete();
+                $Operation->delete();
                 return response()->json([
                     "Status_code"=>200,
                     "Status_message"=>"La suppremion à été effectué",
-                    "Data"=>$Agent
+                    "Data"=>$Operation
                 ],200);
 
             }catch(Exception $error){

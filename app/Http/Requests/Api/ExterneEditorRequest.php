@@ -23,7 +23,25 @@ class ExterneEditorRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            
+        ];
+    }
+    public function failedValidation(Validator $validator){
+        throw new HttpResponseException(response()->json([
+            "Success"=>false,
+            "Error"=>true,
+            "Message"=>"La modificcation n'a pas aboutis",
+            "Erros list"=>$validator->errors()
+        ],400));
+    }
+    public function messages(){
+        return[
+            "nom_externe.string"=>"Les contenus saisit dans le nom_externe n'est pas une chaine de caractere",
+            "nom_externe.max"=>"Les textes saisit depasse la limitation recommandée",
+            "fonction_externe.string"=>"Les contenus saisit dans le fonction_externe n'est pas une chaine de caractere",
+            "fonction_externe.max"=>"Les textes saisit depasse la limitation recommandée",
+            "motif.string"=>"Les textes saisit depasse la limitation recommandée",
+            "motif.max"=>"Cet e_mail_client est déjà utilisé",
         ];
     }
 }

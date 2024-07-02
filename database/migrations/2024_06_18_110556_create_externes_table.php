@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string("nom_externe",45);
             $table->string("fonction_externe",45);
-            $table->string("motif",45);
+            $table->string("motif",500);
             $table->timestamps();
         });
     }

@@ -13,7 +13,7 @@ use App\Models\Adresse;
 class ClientController extends Controller
 {
     public function index (Request $req){
-        $query=Agence::query();
+        $query=Client::query();
         $persopage=25;
         $page=$req->input("page",1);
         $search=$req->input("search");
@@ -87,7 +87,7 @@ class ClientController extends Controller
             }
      
         }
-        public function delete(Client $client){
+        public function delete(Client $Client){
             
             try{
                 $client->delete();

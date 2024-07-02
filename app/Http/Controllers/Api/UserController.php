@@ -24,7 +24,7 @@ class UserController extends Controller
           
           if(auth()->attempt($req->only(['email','password']))){
             $user=auth()->user();
-            $token=$user->createToken(env('TOKEN_JETON'))->plainTextToken;
+            $token=$user->createToken(env('$TOKEN_JETON'))->plainTextToken;
             return response()->json([
                  "Statut_code"=>200,
                  "Success"=>true,

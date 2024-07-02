@@ -23,7 +23,29 @@ class OperationEditorRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+           
+        ];
+    }
+    public function failedValidation(Validator $validator){
+        throw new HttpResponseException(response()->json([
+            "Success"=>false,
+            "Error"=>true,
+            "Message"=>"La modificcation n'a pas aboutis",
+            "Erros list"=>$validator->errors()
+        ],400));
+    }
+    public function messages(){
+        return [
+            "montant.float"=>"Le montant inserer n'est pas recommandée ex:0.1,200.1",
+            "devise.string"=>"Le contenus de ce champ n'est pas une chaine de caractere",
+            "devise.max"=>"Les contenus inserer depasse la limitation recommandée",
+            "commission.float"=>"La commission inserer n'est pas recommandée ex:0.1,200.1",
+            "code_operation.string"=>"Le contenus de ce champ n'est pas une chaine de caractere",
+            "code_operation.max"=>"Les contenus inserer depasse la limitation recommandée",
+            "code_operation.unique"=>"Le code de l'operation existe déjà",
+            "etat.string"=>"Le contenus de ce champ n'est pas une chaine de caractere",
+            "etat.max"=>"Les contenus inserer depasse la limitation recommandée",
+            "date_livraison.datetime"=>"La date de la livraison n'est pas indiquer",
         ];
     }
 }

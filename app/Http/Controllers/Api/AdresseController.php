@@ -48,7 +48,7 @@ class AdresseController extends Controller
     public function create(AdresseCreateRequest $req){
         
         try{
-            $nouvelle_adresse= new Adresse();
+        $nouvelle_adresse= new Adresse();
         $nouvelle_adresse->avenue=$req->avenue;
         $nouvelle_adresse->quartier=$req->quartier;
         $nouvelle_adresse->commune=$req->commune;
